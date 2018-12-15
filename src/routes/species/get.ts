@@ -1,8 +1,8 @@
 import Services from 'model/services/Services';
 
-export const getAnimals = {
+export const getSpecies = {
   route: '/',
   func: async (req, res) => {
-    res.json(await Services.Animal.getAllEntries());
+    res.json(await Services.Species.getAllEntries());
   }
 };

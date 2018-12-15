@@ -7,18 +7,14 @@ const r = type => ({
 
 export interface User {
   email: string,
-  password: string,
-  deviceToken?: string,
-  query?: object
+  password: string
 }
 
 interface IUser extends User, mongoose.Document {}
 
 const UserSchema: any = new mongoose.Schema({
   email: r(String),
-  password: r(String),
-  deviceToken: String,
-  query: Object
+  password: r(String)
 });
 
 export const User = mongoose.model<IUser>('User', UserSchema);
