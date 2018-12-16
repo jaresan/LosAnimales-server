@@ -11,13 +11,18 @@ export const createSpecies = {
       behaviour
     } = req.body;
 
-    const { buffer } = req.files[0];
+    const filesByName = req.files.reduce((acc, file) => {
+      acc[file.fieldname] = file;
+      return acc;
+    }, {});
 
-    const imgUrl = await Services.S3.uploadImage(buffer, `species-${name}`);
+    const thumbnailImg = await Services.S3.uploadImage(filesByName.thumbnail.buffer, `species-thumbnail-${name}`);
+    const detailImg = await Services.S3.uploadImage(filesByName.detail.buffer, `species-detail-${name}`);
 
     const toSave = {
       name,
-      img: imgUrl,
+      thumbnailImg,
+      detailImg,
       info: {
         classification,
         diet,

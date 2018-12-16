@@ -7,7 +7,8 @@ const r = type => ({
 
 export interface Species {
   name: string,
-  img: string,
+  thumbnailImg: string,
+  detailImg: string,
   info: object
 }
 
@@ -15,7 +16,8 @@ interface ISpecies extends Species, mongoose.Document {}
 
 const SpeciesSchema: any = new mongoose.Schema({
   name: r(String),
-  img: r(String),
+  thumbnailImg: r(String),
+  detailImg: r(String),
   info: r(Object)
 });
 
