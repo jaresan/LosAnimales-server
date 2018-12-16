@@ -26,9 +26,13 @@ export const createSpecies = {
       }
     };
 
+    const result = await Services.Species.connection.model.updateOne({
+      name
+    }, toSave, { upsert: true, setDefaultsOnInsert: true });
+
     res.json({
       success: true,
-      result: await Services.Species.save(toSave)
+      result
     });
   }
 };

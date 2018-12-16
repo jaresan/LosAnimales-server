@@ -11,7 +11,7 @@ export default class DBConnection {
     return new DBConnection(model);
   }
 
-  constructor(private model: mongoose.Model<any>) {}
+  constructor(public model: mongoose.Model<any>) {}
 
   async getAllEntries(filter, fields) {
     return this.model.find(filter, fields).sort({ _id : -1 });

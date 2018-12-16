@@ -1,5 +1,5 @@
 export default class Service<T> {
-  constructor(private connection) {}
+  constructor(public connection) {}
 
   async getAllEntries(filter?: object, fields?: object): Promise<T[]> {
     return await this.connection.getAllEntries(filter, fields);
