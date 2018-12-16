@@ -7,14 +7,16 @@ const r = type => ({
 
 export interface Species {
   name: string,
-  img?: string
+  img: string,
+  info: object
 }
 
 interface ISpecies extends Species, mongoose.Document {}
 
 const SpeciesSchema: any = new mongoose.Schema({
   name: r(String),
-  img: String
+  img: r(String),
+  info: r(Object)
 });
 
 export const Species = mongoose.model<ISpecies>('Species', SpeciesSchema);

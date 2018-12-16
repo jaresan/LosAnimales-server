@@ -5,12 +5,15 @@ import {
 } from 'model';
 import { setupRouter } from 'setup';
 import * as bodyParser from 'body-parser';
+import * as multer from 'multer';
 
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(multer().any());
 
 const server = app.listen(port);
 
