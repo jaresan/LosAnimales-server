@@ -7,37 +7,46 @@ export const createSpecies = {
       name,
       classification,
       diet,
-      appereance,
-      behaviour
+      appearance,
+      behaviour,
+      thumbnail,
+      detail,
+      description,
+      location
     } = req.body;
 
-    const filesByName = req.files.reduce((acc, file) => {
-      acc[file.fieldname] = file;
-      return acc;
-    }, {});
+    try {
+      const toSave = {
+        $set: {
+          name,
+          info: {
+            classification,
+            diet,
+            appearance,
+            behaviour,
+            description,
+            location
+          }
+        }
+      };
 
-    const thumbnailImg = await Services.S3.uploadImage(filesByName.thumbnail.buffer, `species-thumbnail-${name}`);
-    const detailImg = await Services.S3.uploadImage(filesByName.detail.buffer, `species-detail-${name}`);
-
-    const toSave = {
-      name,
-      thumbnailImg,
-      detailImg,
-      info: {
-        classification,
-        diet,
-        appereance,
-        behaviour
+      if (thumbnail) {
+        toSave['$set']['thumbnailImg'] = await Services.S3.uploadImage(new Buffer(thumbnail, 'binary'), `species-thumbnail-${name}`);
       }
-    };
+      if (detail) {
+        toSave['$set']['detailImg'] = await Services.S3.uploadImage(new Buffer(detail, 'binary'), `species-detail-${name}`);
+      }
 
-    const result = await Services.Species.connection.model.updateOne({
-      name
-    }, toSave, { upsert: true, setDefaultsOnInsert: true });
+      const result = await Services.Species.connection.model.updateOne({
+        name
+      }, toSave, { upsert: true, setDefaultsOnInsert: true });
 
-    res.json({
-      success: true,
-      result
-    });
+      res.json({
+        success: true,
+        result
+      });
+    } catch (error) {
+      res.json({ error });
+    }
   }
 };

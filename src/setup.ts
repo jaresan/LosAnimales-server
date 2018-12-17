@@ -7,7 +7,7 @@ function registerRoutes(app, dirPath, baseRoute, file) {
   const method = path.basename(file, path.extname(file));
 
   _.forEach(routes, ({ func, route }) => {
-    console.log(path.join(baseRoute, route));
+    console.log(method.toUpperCase(), path.join(baseRoute, route));
     app[method](path.join(baseRoute, route), func);
   });
 }

@@ -27,6 +27,7 @@ export default class Services {
           Key: `${name}.png`,
           Body: img,
           ContentType: 'image/png',
+          CacheControl: 'max-age=31557600',
           ACL: 'public-read'
         }, (error, data) => {
           if (error) {

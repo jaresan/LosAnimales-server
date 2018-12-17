@@ -5,7 +5,8 @@ export const createAnimal = {
   func: async (req, res) => {
     const {
       name,
-      species
+      species,
+      img
     } = req.body;
 
     const speciesArr = (await Services.Species.getAllEntries({ name: species }));
@@ -15,8 +16,13 @@ export const createAnimal = {
         msg: `Species "${species}" not found`
       });
     } else {
-      const { buffer } = req.files[0];
-      const imgUrl = await Services.S3.uploadImage(buffer, `animal-${name}`);
+      if (!img) {
+        res.json({
+          success: false,
+          msg: 'Image not specified!'
+        });
+      }
+      const imgUrl = await Services.S3.uploadImage(new Buffer(img, 'binary'), `animal-${name}`);
 
 
       const result = await Services.Animal.connection.model.updateOne({
